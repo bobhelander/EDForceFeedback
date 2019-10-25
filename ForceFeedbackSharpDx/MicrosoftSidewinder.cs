@@ -67,6 +67,8 @@ namespace ForceFeedbackSharpDx
 
             // Set BufferSize in order to use buffered data.
             joystick.Properties.BufferSize = 128;
+
+            // DirectX requires a window handle to set the CooperativeLevel
             var handle = System.Diagnostics.Process.GetCurrentProcess().MainWindowHandle;
 
             joystick.SetCooperativeLevel(handle, CooperativeLevel.Exclusive | CooperativeLevel.Background);
@@ -81,7 +83,6 @@ namespace ForceFeedbackSharpDx
             if (effect.Status != EffectStatus.Playing)
             {
                 Console.WriteLine($"Effect {effect.Guid} starting");
-                // If not, play them
                 effect.Start(1, EffectPlayFlags.NoDownload);
             }
         }
@@ -96,24 +97,35 @@ namespace ForceFeedbackSharpDx
         {
             foreach (var effect in effects)
                 effect.Stop();
+
+            foreach (var effect in effects)
+                effect.Dispose();
         }
 
         public void PlayFileEffect(string name, int duration = 250)
         {
-            var fileEffect = fileEffects[name];
+            try
+            {
+                var fileEffect = fileEffects[name];
 
-            _ = Task.Run(async () =>
+                _ = Task.Run(async () =>
+                {
+                    // Create a new list of effects
+                    var forceEffects = fileEffect.Select(x => new Effect(joystick, x.Guid, x.Parameters)).ToList();
+                    PlayEffects(forceEffects);
+                    await Task.Delay(duration).ConfigureAwait(false);
+                    StopEffects(forceEffects);
+                }).ContinueWith(t =>
+                {
+                    if (t.IsCanceled) Console.WriteLine($"Effect {name} cancelled");
+                    else if (t.IsFaulted) Console.WriteLine($"Effect {name} Exception {t.Exception.InnerException?.Message}");
+                    else Console.WriteLine($"Effect {name} complete");
+                });
+            }
+            catch(Exception ex)
             {
-                var forceEffects = fileEffect.Select(x => new Effect(joystick, x.Guid, x.Parameters)).ToList();
-                PlayEffects(forceEffects);
-                await Task.Delay(duration).ConfigureAwait(false);
-                StopEffects(forceEffects);
-            }).ContinueWith(t =>
-            {
-                if (t.IsCanceled) Console.WriteLine($"Effect {name} cancelled");
-                else if (t.IsFaulted) Console.WriteLine($"Effect {name} Exception {t.Exception.Message}");
-                else Console.WriteLine($"Effect {name} complete");
-            });
+                Console.WriteLine($"Exception {ex.Message}");
+            }
         }
     }
 }
