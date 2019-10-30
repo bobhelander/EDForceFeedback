@@ -47,12 +47,14 @@ namespace ForceFeedbackSharpDx
 
             Console.WriteLine("Found Joystick/Gamepad with GUID: {0}", joystickGuid);
 
+            
+
             // Query all suported ForceFeedback effects
             var allEffects = joystick.GetEffects();
             foreach (var effectInfo in allEffects)
             {
                 knownEffects.Add(effectInfo.Name, effectInfo);
-                Console.WriteLine("Effect available {0}", effectInfo.Name);
+                Console.WriteLine("Effect available {0}", effectInfo.Name); 
             }
 
             // Load all of the effect files
@@ -73,8 +75,15 @@ namespace ForceFeedbackSharpDx
 
             joystick.SetCooperativeLevel(handle, CooperativeLevel.Exclusive | CooperativeLevel.Background);
 
+            // Autocenter on
+            joystick.Properties.AutoCenter = true;
+
             // Acquire the joystick
             joystick.Acquire();
+
+            //var test = joystick.Properties.ForceFeedbackGain;
+
+            joystick.Properties.ForceFeedbackGain = 10000;
         }
 
         private void PlayEffect(Effect effect)
