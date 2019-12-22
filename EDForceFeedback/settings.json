@@ -1,4 +1,5 @@
 {
+  "ProductGuid": "001b045e-0000-0000-0000-504944564944",
   "StatusEvents": [
     {
       "Event": "Status.Docked:True",

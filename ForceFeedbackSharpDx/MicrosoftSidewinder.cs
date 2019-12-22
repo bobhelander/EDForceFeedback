@@ -11,16 +11,18 @@ namespace ForceFeedbackSharpDx
     public class MicrosoftSidewinder
     {
         // Microsoft Force Feedback 2
-        private static Guid product = new Guid("001b045e-0000-0000-0000-504944564944");
+        //private static Guid product = new Guid("001b045e-0000-0000-0000-504944564944");
 
         private Joystick joystick = null;
         private readonly Dictionary<string, EffectInfo> knownEffects = new Dictionary<string, EffectInfo>();
         private readonly Dictionary<string, List<EffectFile>> fileEffects = new Dictionary<string, List<EffectFile>>();
 
-        public void ForceFeedback2()
+        public void ForceFeedback2(string productGuid = "001b045e-0000-0000-0000-504944564944")
         {
             // Initialize DirectInput
             var directInput = new DirectInput();
+
+            var product = new Guid(productGuid);
 
             // Find a Joystick Guid
             var joystickGuid = Guid.Empty;
@@ -46,8 +48,6 @@ namespace ForceFeedbackSharpDx
             joystick = new Joystick(directInput, joystickGuid);
 
             Console.WriteLine("Found Joystick/Gamepad with GUID: {0}", joystickGuid);
-
-            
 
             // Query all suported ForceFeedback effects
             var allEffects = joystick.GetEffects();
@@ -109,6 +109,13 @@ namespace ForceFeedbackSharpDx
 
             foreach (var effect in effects)
                 effect.Dispose();
+
+            Reset();
+        }
+
+        private void Reset()
+        {
+            joystick.SendForceFeedbackCommand(ForceFeedbackCommand.Reset);
         }
 
         public void PlayFileEffect(string name, int duration = 250)

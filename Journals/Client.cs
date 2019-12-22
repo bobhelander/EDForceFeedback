@@ -25,7 +25,7 @@ namespace Journals
             eliteAPI.Start();
 
             msffb2 = new MicrosoftSidewinder();
-            msffb2.ForceFeedback2();
+            msffb2.ForceFeedback2(settings.ProductGuid);
 
             eliteAPI.Events.AllEvent += Events_AllEvent;
         }
