@@ -29,6 +29,8 @@ namespace ForceFeedbackSharpDx
 
             foreach (var deviceInstance in directInput.GetDevices(DeviceType.Joystick, DeviceEnumerationFlags.AllDevices))
             {
+                Console.WriteLine($"Device: {deviceInstance.ProductName}: ProductGuid {deviceInstance.ProductGuid}");
+
                 if (deviceInstance.ProductGuid == product)
                 {
                     joystickGuid = deviceInstance.InstanceGuid;
