@@ -2,16 +2,55 @@
 Elite Dangerous Force Feedback with a Microsoft Force Feedback 2 Joystick (MSFFB2)
 
 ### Description
-EDForceFeedback.exe is a console program that runs during a Elite Dangerous session.  It watches the ED log files and responds to game events by playing a force feedback editor (.ffe) file.  It is only configured to work with a [Microsoft Sidewinder Force Feedback 2](https://en.wikipedia.org/wiki/Microsoft_SideWinder#Force_Feedback_2) joystick. 
+EDForceFeedback.exe is a console program that runs during a Elite Dangerous session.  It watches the ED log files and responds to game events by playing a force feedback editor (.ffe) file.  
+
+It has been tested with the following devices:
+
+[Microsoft XBox One Controller](https://en.wikipedia.org/wiki/Xbox_One_controller) running the [XInput modification](https://steamcommunity.com/discussions/forum/1/541907867790900215/) 
+
+[Microsoft Sidewinder Force Feedback 2](https://en.wikipedia.org/wiki/Microsoft_SideWinder#Force_Feedback_2) joystick. 
+
+[Saitek Cyborg 3D Force Stick](https://www.yumpu.com/en/document/view/38049421/cyborg-force-manualqxd-saitekcom)
 
 ### Usage
-1. Connect your MSFFB2 joystick and run the EDForceFeedback.exe program.  
+1. Connect your joystick/gamepad and run the EDForceFeedback.exe program.  
 2. Start Elite Dangerous 
 3. In-game events like deploy/retract hardpoints and deploy/retract landing gear will send the configured forces to the joystick.
 
 ### Configuration
 
-The `settings.json` file contains the events and the forces that will be played when an event occurs.  Each event can have a different force played for the on or off state.
+The `settings.json` file contains the device and the forces that will be played when an event occurs.  Multiple different devices can be configured with different effects for each device.
+
+Included in the package are several different examples of different configurations.
+
+###### Devices
+
+
+    "Devices": [
+        {
+          "ProductGuid": "02dd045e-0000-0000-0000-504944564944",
+          "ProductName": "Controller (Xbox One For Windows)",
+
+          "StatusEvents": [ 
+          ...
+
+Each device and the configured effects for the device has it's own section.  If the device guid or product name are unknown, you may attempt to use the values the program outputs for the connected devices while it is initializing. 
+
+###### ProductGuid & ProductName
+
+Both values are searched against the list during initialization.  If either is found the device is selected.
+
+###### Autocenter
+
+The Microsoft Force Feedback device sometimes turns off the autocenter value after playing an effect.  Setting this value to true, resets the centering spring.
+
+###### ForceFeedbackGain
+
+This value is the strenth of the effects.  The valid range is 0-10000.
+
+###### StatusEvents
+
+Each event can have a different force played for the on or off state.  The on/off state for the "Docked" event is the following events "Status.Docked:True" happens when the ship is docked and "Status.Docked:False" happens when the ship takes off.
 
 	{
 		"Event": "Status.Docked:True",

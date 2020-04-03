@@ -17,7 +17,7 @@ namespace ForceFeedbackSharpDx
         private readonly Dictionary<string, EffectInfo> knownEffects = new Dictionary<string, EffectInfo>();
         private readonly Dictionary<string, List<EffectFile>> fileEffects = new Dictionary<string, List<EffectFile>>();
 
-        public void ForceFeedback2(string productGuid = "001b045e-0000-0000-0000-504944564944")
+        public bool ForceFeedback2(string productGuid, string productName, bool AutoCenter, int ForceFeedbackGain)
         {
             // Initialize DirectInput
             var directInput = new DirectInput();
@@ -26,14 +26,22 @@ namespace ForceFeedbackSharpDx
 
             // Find a Joystick Guid
             var joystickGuid = Guid.Empty;
+            var joystickName = String.Empty;
 
-            foreach (var deviceInstance in directInput.GetDevices(DeviceType.Joystick, DeviceEnumerationFlags.AllDevices))
+            var directInputDevices = new List<DeviceInstance>();
+
+            directInputDevices.AddRange(directInput.GetDevices(DeviceType.Joystick, DeviceEnumerationFlags.AllDevices));
+            directInputDevices.AddRange(directInput.GetDevices(DeviceType.Gamepad, DeviceEnumerationFlags.AllDevices));
+            directInputDevices.AddRange(directInput.GetDevices(DeviceType.Driving, DeviceEnumerationFlags.AllDevices));
+
+            foreach (var deviceInstance in directInputDevices)
             {
-                Console.WriteLine($"Device: {deviceInstance.ProductName}: ProductGuid {deviceInstance.ProductGuid}");
+                Console.WriteLine($"DeviceName: {deviceInstance.ProductName}: ProductGuid {deviceInstance.ProductGuid}");
 
-                if (deviceInstance.ProductGuid == product)
+                if (deviceInstance.ProductGuid == product || deviceInstance.ProductName == productName)
                 {
                     joystickGuid = deviceInstance.InstanceGuid;
+                    joystickName = deviceInstance.ProductName;
                     break;
                 }
             }
@@ -41,22 +49,21 @@ namespace ForceFeedbackSharpDx
             // If Joystick not found, throws an error
             if (joystickGuid == Guid.Empty)
             {
-                Console.WriteLine("No joystick/Gamepad found.");
-                Console.ReadKey();
-                Environment.Exit(1);
+                Console.WriteLine("No matching Joystick/Gamepad/Wheel found. {deviceInstance.ProductName} {productGuid}");
+                return false;
             }
 
             // Instantiate the joystick
             joystick = new Joystick(directInput, joystickGuid);
 
-            Console.WriteLine("Found Joystick/Gamepad with GUID: {0}", joystickGuid);
+            Console.WriteLine("Found Joystick/Gamepad {0}", joystickName);
 
             // Query all suported ForceFeedback effects
             var allEffects = joystick.GetEffects();
             foreach (var effectInfo in allEffects)
             {
                 knownEffects.Add(effectInfo.Name, effectInfo);
-                Console.WriteLine("Effect available {0}", effectInfo.Name); 
+                Console.WriteLine("Effect available {0}", effectInfo.Name);
             }
 
             // Load all of the effect files
@@ -78,14 +85,16 @@ namespace ForceFeedbackSharpDx
             joystick.SetCooperativeLevel(handle, CooperativeLevel.Exclusive | CooperativeLevel.Background);
 
             // Autocenter on
-            joystick.Properties.AutoCenter = true;
+            joystick.Properties.AutoCenter = AutoCenter;
 
             // Acquire the joystick
             joystick.Acquire();
 
             //var test = joystick.Properties.ForceFeedbackGain;
 
-            joystick.Properties.ForceFeedbackGain = 10000;
+            joystick.Properties.ForceFeedbackGain = ForceFeedbackGain;
+
+            return true;
         }
 
         private void PlayEffect(Effect effect)

@@ -10,8 +10,10 @@
 
   "Devices": [
     {
-      "ProductGuid": "02dd045e-0000-0000-0000-504944564944",
+      "ProductGuid": "001b045e-0000-0000-0000-504944564944",
       "ProductName": "Controller (Xbox One For Windows)",
+      "AutoCenter": true,
+      "ForceFeedbackGain": 10000,
 
       "StatusEvents": [
         {

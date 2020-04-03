@@ -11,21 +11,38 @@ namespace Journals
 {
     public class Client
     {
-        private MicrosoftSidewinder msffb2;
+        
         private EliteDangerousAPI eliteAPI;
 
-        private Dictionary<string, EventConfiguration> eventSettings = new Dictionary<string, EventConfiguration>();
+
+
+        private List<DeviceEvents> Devices = new List<DeviceEvents>(); 
 
         public void Initialize(Settings settings)
         {
-            this.eventSettings = settings.StatusEvents.ToDictionary(v => v.Event, v => v);
-
+            // Initialize first. We are outputing to the console set up in this API
             eliteAPI = new EliteDangerousAPI();
             eliteAPI.Logger.UseConsole(Severity.Info);
-            eliteAPI.Start();
 
-            msffb2 = new MicrosoftSidewinder();
-            msffb2.ForceFeedback2(settings.ProductGuid);
+            foreach (var device in settings.Devices)
+            {
+                var ffDevice = new MicrosoftSidewinder();
+                if (ffDevice.ForceFeedback2(
+                    device.ProductGuid, 
+                    device.ProductName,
+                    device.AutoCenter,
+                    device.ForceFeedbackGain) == false)
+                continue;
+
+                var deviceEvents = new DeviceEvents {
+                    EventSettings = device.StatusEvents.ToDictionary(v => v.Event, v => v),
+                    Device = ffDevice
+                };
+
+                Devices.Add(deviceEvents);
+            }
+                       
+            eliteAPI.Start();
 
             eliteAPI.Events.AllEvent += Events_AllEvent;
         }
@@ -37,10 +54,13 @@ namespace Journals
                 var statusEvent = e as EliteAPI.Events.StatusEvent;
                 var key = $"{statusEvent.Event}:{statusEvent.Value}";
                 Console.WriteLine($"StatusEvent {key}");
-                if (eventSettings.ContainsKey(key))
+                foreach (var device in Devices)
                 {
-                    var eventConfig = eventSettings[key];
-                    msffb2?.PlayFileEffect(eventConfig.ForceFile, eventConfig.Duration);
+                    if (device.EventSettings.ContainsKey(key))
+                    {
+                        var eventConfig = device.EventSettings[key];
+                        device.Device?.PlayFileEffect(eventConfig.ForceFile, eventConfig.Duration);
+                    }
                 }
             }
             else
