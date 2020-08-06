@@ -11,37 +11,36 @@ namespace Journals
 {
     public class Client
     {
-        
+
         private EliteDangerousAPI eliteAPI;
 
-
-
-        private List<DeviceEvents> Devices = new List<DeviceEvents>(); 
+        private readonly List<DeviceEvents> Devices = new List<DeviceEvents>();
 
         public void Initialize(Settings settings)
         {
             // Initialize first. We are outputing to the console set up in this API
             eliteAPI = new EliteDangerousAPI();
-            eliteAPI.Logger.UseConsole(Severity.Info);
+            //eliteAPI.Logger.UseConsole(Severity.Info);
 
             foreach (var device in settings.Devices)
             {
                 var ffDevice = new MicrosoftSidewinder();
                 if (ffDevice.ForceFeedback2(
-                    device.ProductGuid, 
+                    device.ProductGuid,
                     device.ProductName,
                     device.AutoCenter,
                     device.ForceFeedbackGain) == false)
-                continue;
+                    continue;
 
-                var deviceEvents = new DeviceEvents {
+                var deviceEvents = new DeviceEvents
+                {
                     EventSettings = device.StatusEvents.ToDictionary(v => v.Event, v => v),
                     Device = ffDevice
                 };
 
                 Devices.Add(deviceEvents);
             }
-                       
+
             eliteAPI.Start();
 
             eliteAPI.Events.AllEvent += Events_AllEvent;

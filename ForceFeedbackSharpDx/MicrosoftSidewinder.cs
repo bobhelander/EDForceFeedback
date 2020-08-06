@@ -149,7 +149,7 @@ namespace ForceFeedbackSharpDx
                     else Console.WriteLine($"Effect {name} complete");
                 });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"Exception {ex.Message}");
             }
