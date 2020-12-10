@@ -5,7 +5,9 @@
     "NOTES2": "The device search will match on either value",
     "Xbox One For Windows": "ProductGuid = 02dd045e-0000-0000-0000-504944564944  ProductName = 'Controller (Xbox One For Windows)'",
     "MSFF2": "ProductGuid = 001b045e-0000-0000-0000-504944564944  ProductName = 'SideWinder Force Feedback 2 Joystick'",
-    "Cyborg 3D Force Stick": "ProductGuid = ff1206a3-0000-0000-0000-504944564944"
+    "Saitek Cyborg 3D Force Stick": "ProductGuid = ff1206a3-0000-0000-0000-504944564944",
+    "Saitek Cyborg Evo Force Stick": "ProductGuid = ffb506a3-0000-0000-0000-504944564944",
+    "Teensy Boards": "ProductGuid = 230028de-0000-0000-0000-504944564944 ProductName = IMU"
   },
 
   "Devices": [

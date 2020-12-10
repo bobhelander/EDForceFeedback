@@ -10,6 +10,8 @@ namespace ForceFeedbackSharpDx
 {
     public class MicrosoftSidewinder
     {
+        private const uint WINDOW_HANDLE_ERROR = 0x80070006;
+
         // Microsoft Force Feedback 2
         //private static Guid product = new Guid("001b045e-0000-0000-0000-504944564944");
 
@@ -83,7 +85,23 @@ namespace ForceFeedbackSharpDx
             // DirectX requires a window handle to set the CooperativeLevel
             var handle = System.Diagnostics.Process.GetCurrentProcess().MainWindowHandle;
 
-            joystick.SetCooperativeLevel(handle, CooperativeLevel.Exclusive | CooperativeLevel.Background);
+            try
+            {
+                joystick.SetCooperativeLevel(handle, CooperativeLevel.Exclusive | CooperativeLevel.Background);
+            }
+            catch(SharpDX.SharpDXException ex ) when ((uint)ex.HResult == WINDOW_HANDLE_ERROR)
+            {
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine($"***********************************************************************************");
+                Console.WriteLine();
+                Console.WriteLine($" Unable to access window handle.  Do not run EDForceFeedback.exe in a console window.");
+                Console.WriteLine();
+                Console.WriteLine($"***********************************************************************************");
+                Console.WriteLine();
+                Console.WriteLine();
+                return false;
+            }
 
             // Autocenter on
             joystick.Properties.AutoCenter = AutoCenter;
