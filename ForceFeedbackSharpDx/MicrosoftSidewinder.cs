@@ -103,8 +103,15 @@ namespace ForceFeedbackSharpDx
                 return false;
             }
 
-            // Autocenter on
-            joystick.Properties.AutoCenter = AutoCenter;
+            try
+            {
+                // Autocenter on
+                joystick.Properties.AutoCenter = AutoCenter;
+            }
+            catch (Exception _)
+            {
+                // Some devices do not support this setting.
+            }
 
             // Acquire the joystick
             joystick.Acquire();
