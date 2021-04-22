@@ -24,10 +24,11 @@ namespace Journals
 
             foreach (var device in settings.Devices)
             {
-                var ffDevice = new MicrosoftSidewinder();
-                if (ffDevice.ForceFeedback2(
+                var ffDevice = new ForceFeedbackController();
+                if (ffDevice.Initialize(
                     device.ProductGuid,
                     device.ProductName,
+                    @".\Forces",
                     device.AutoCenter,
                     device.ForceFeedbackGain) == false)
                     continue;
@@ -58,7 +59,7 @@ namespace Journals
                     if (device.EventSettings.ContainsKey(key))
                     {
                         var eventConfig = device.EventSettings[key];
-                        device.Device?.PlayFileEffect(eventConfig.ForceFile, eventConfig.Duration);
+                        var test = device.Device?.PlayFileEffect(eventConfig.ForceFile, eventConfig.Duration);
                     }
                 }
             }

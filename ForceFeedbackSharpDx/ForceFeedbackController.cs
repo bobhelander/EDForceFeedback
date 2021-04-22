@@ -5,21 +5,26 @@ using System.Text;
 using System.Threading.Tasks;
 using SharpDX.DirectInput;
 using System.Linq;
+using SharpDX;
 
 namespace ForceFeedbackSharpDx
 {
-    public class MicrosoftSidewinder
+    public class ForceFeedbackController
     {
         private const uint WINDOW_HANDLE_ERROR = 0x80070006;
-
-        // Microsoft Force Feedback 2
-        //private static Guid product = new Guid("001b045e-0000-0000-0000-504944564944");
 
         private Joystick joystick = null;
         private readonly Dictionary<string, EffectInfo> knownEffects = new Dictionary<string, EffectInfo>();
         private readonly Dictionary<string, List<EffectFile>> fileEffects = new Dictionary<string, List<EffectFile>>();
 
-        public bool ForceFeedback2(string productGuid, string productName, bool AutoCenter, int ForceFeedbackGain)
+        public bool Initialize(
+            string productGuid,
+            string productName,
+            string forceFilesFolder,
+            bool autoCenter,
+            int forceFeedbackGain,
+            int deadzone = 0,
+            int saturation = 10000)
         {
             // Initialize DirectInput
             var directInput = new DirectInput();
@@ -33,6 +38,8 @@ namespace ForceFeedbackSharpDx
             var directInputDevices = new List<DeviceInstance>();
 
             directInputDevices.AddRange(directInput.GetDevices());
+
+            // Filtered
             //directInputDevices.AddRange(directInput.GetDevices(DeviceType.Joystick, DeviceEnumerationFlags.AllDevices));
             //directInputDevices.AddRange(directInput.GetDevices(DeviceType.Gamepad, DeviceEnumerationFlags.AllDevices));
             //directInputDevices.AddRange(directInput.GetDevices(DeviceType.Driving, DeviceEnumerationFlags.AllDevices));
@@ -70,7 +77,7 @@ namespace ForceFeedbackSharpDx
             }
 
             // Load all of the effect files
-            var forcesFolder = new DirectoryInfo(@".\Forces");
+            var forcesFolder = new DirectoryInfo(forceFilesFolder);
 
             foreach (var file in forcesFolder.GetFiles("*.ffe"))
             {
@@ -87,9 +94,10 @@ namespace ForceFeedbackSharpDx
 
             try
             {
+                // Exclusive is required to control the forces
                 joystick.SetCooperativeLevel(handle, CooperativeLevel.Exclusive | CooperativeLevel.Background);
             }
-            catch(SharpDX.SharpDXException ex ) when ((uint)ex.HResult == WINDOW_HANDLE_ERROR)
+            catch (SharpDX.SharpDXException ex) when ((uint)ex.HResult == WINDOW_HANDLE_ERROR)
             {
                 Console.WriteLine();
                 Console.WriteLine();
@@ -105,10 +113,11 @@ namespace ForceFeedbackSharpDx
 
             try
             {
-                // Autocenter on
-                joystick.Properties.AutoCenter = AutoCenter;
+                // Autocenter: For the MSFF2 joystick this value is a spring force that plays in the background.
+                // If all effects are stopped. The spring will stop too.  Reset will turn it back on.
+                joystick.Properties.AutoCenter = autoCenter;
             }
-            catch (Exception _)
+            catch (SharpDXException)
             {
                 // Some devices do not support this setting.
             }
@@ -116,9 +125,11 @@ namespace ForceFeedbackSharpDx
             // Acquire the joystick
             joystick.Acquire();
 
-            //var test = joystick.Properties.ForceFeedbackGain;
+            SetActuators(true);
 
-            joystick.Properties.ForceFeedbackGain = ForceFeedbackGain;
+            joystick.Properties.DeadZone = deadzone;
+            joystick.Properties.Saturation = saturation;
+            joystick.Properties.ForceFeedbackGain = forceFeedbackGain;
 
             return true;
         }
@@ -139,46 +150,95 @@ namespace ForceFeedbackSharpDx
                 PlayEffect(effect);
         }
 
-        private void StopEffects(IEnumerable<Effect> effects)
+        /// <summary>
+        /// Stop any effects that were started from the PlayFileEffect() method.
+        /// </summary>
+        /// <param name="effects"></param>
+        public void StopEffects(IEnumerable<Effect> effects)
         {
             foreach (var effect in effects)
-                effect.Stop();
+            {
+                try { effect.Stop(); }
+                catch (SharpDXException) { }
+            }
 
             foreach (var effect in effects)
-                effect.Dispose();
+                effect?.Dispose();
 
-            Reset();
+            //Reset();  // This will kill all effects
         }
 
-        private void Reset()
+        /// <summary>
+        /// Stop all effects. Reset to Default. Note: This reenables the center spring if autocenter is set.
+        /// </summary>
+        public void Reset()
         {
             joystick.SendForceFeedbackCommand(ForceFeedbackCommand.Reset);
         }
 
-        public void PlayFileEffect(string name, int duration = 250)
+        /// <summary>
+        /// Stop all effects.  Note: This will disable the autocenter effect.  To reenable call Reset().
+        /// </summary>
+        public void StopAllEffects()
+        {
+            joystick.SendForceFeedbackCommand(ForceFeedbackCommand.StopAll);
+        }
+
+        /// <summary>
+        /// Set the actuators on/off
+        /// </summary>
+        public void SetActuators(bool on = true)
+        {
+            if (on)
+                joystick.SendForceFeedbackCommand(ForceFeedbackCommand.SetActuatorsOn);
+            else
+                joystick.SendForceFeedbackCommand(ForceFeedbackCommand.SetActuatorsOff);
+        }
+
+        /// <summary>
+        /// Copy the effect file and begin playing it.  If the duration is greater than zero the effect will play for that many milliseconds 
+        /// and then be stopped.
+        /// </summary>
+        /// <param name="name">Effect file name</param>
+        /// <param name="duration">Zero and below will play until stopped.  Above zero will play for that many milliseconds.  Default: 250.</param>
+        /// <returns>The effects being played as a List<Effect> or null if the effect file was not found.</returns>
+        public List<Effect> PlayFileEffect(string name, int duration = 250)
         {
             try
             {
                 var fileEffect = fileEffects[name];
 
+                // Create a new List<> of effects
+                var forceEffects = fileEffect.ConvertAll(x => new Effect(joystick, x.Guid, x.Parameters));
+
                 _ = Task.Run(async () =>
                 {
-                    // Create a new list of effects
-                    var forceEffects = fileEffect.Select(x => new Effect(joystick, x.Guid, x.Parameters)).ToList();
                     PlayEffects(forceEffects);
-                    await Task.Delay(duration).ConfigureAwait(false);
-                    StopEffects(forceEffects);
+                    if (duration > 0)
+                    {
+                        await Task.Delay(duration).ConfigureAwait(false);
+                        StopEffects(forceEffects);
+                    }
+                    else
+                    {
+                        // Wait a moment, effects don't seem to play if we exit fast
+                        await Task.Delay(100).ConfigureAwait(false);
+                    }
                 }).ContinueWith(t =>
                 {
                     if (t.IsCanceled) Console.WriteLine($"Effect {name} cancelled");
                     else if (t.IsFaulted) Console.WriteLine($"Effect {name} Exception {t.Exception.InnerException?.Message}");
                     else Console.WriteLine($"Effect {name} complete");
                 });
+
+                return forceEffects;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Exception {ex.Message}");
             }
+
+            return null;
         }
     }
 }

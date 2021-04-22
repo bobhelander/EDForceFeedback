@@ -7,7 +7,7 @@ namespace Journals
 {
     public class DeviceEvents
     {
-        public MicrosoftSidewinder Device { get; set; }
+        public ForceFeedbackController Device { get; set; }
         public Dictionary<string, EventConfiguration> EventSettings { get; set; } = new Dictionary<string, EventConfiguration>();
     }
 }
