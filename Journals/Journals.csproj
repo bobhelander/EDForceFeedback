@@ -5,10 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EliteAPI" Version="2.2.6.862" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\EliteAPI\EliteAPI\EliteAPI.csproj" />
     <ProjectReference Include="..\ForceFeedbackSharpDx\ForceFeedbackSharpDx.csproj" />
   </ItemGroup>
 

@@ -97,6 +97,11 @@
           "Event": "Status.Overheating:False",
           "ForceFile": "VibrateSide.ffe",
           "Duration": 250
+        },
+        {
+          "Event": "EliteAPI.Event.Models.SupercruiseEntryEvent",
+          "ForceFile": "VibrateSide.ffe",
+          "Duration": 250
         }
       ]
     }
