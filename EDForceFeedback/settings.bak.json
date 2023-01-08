@@ -12,8 +12,10 @@
 
   "Devices": [
     {
-      "ProductGuid": "02dd045e-0000-0000-0000-504944564944",
-      "ProductName": "Controller (Xbox One For Windows)",
+      "ProductGuid": "001b045e-0000-0000-0000-504944564944",
+      "ProductName": "SideWinder Force Feedback 2 Joystick",
+      "AutoCenter": true,
+      "ForceFeedbackGain": 10000,
 
       "StatusEvents": [
         {
@@ -93,6 +95,11 @@
         },
         {
           "Event": "Status.Overheating:False",
+          "ForceFile": "VibrateSide.ffe",
+          "Duration": 250
+        },
+        {
+          "Event": "EliteAPI.Event.Models.SupercruiseEntryEvent",
           "ForceFile": "VibrateSide.ffe",
           "Duration": 250
         }
