@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using SharpDX;
+using SharpDX.DirectInput;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
-using SharpDX.DirectInput;
-using System.Linq;
-using SharpDX;
-using Microsoft.Extensions.Logging;
 
 namespace ForceFeedbackSharpDx
 {
@@ -19,6 +17,8 @@ namespace ForceFeedbackSharpDx
         private readonly Dictionary<string, EffectInfo> knownEffects = new Dictionary<string, EffectInfo>();
         private readonly Dictionary<string, List<EffectFile>> fileEffects = new Dictionary<string, List<EffectFile>>();
         public ILogger Logger { get; set; }
+
+        public String StatusText;
 
         public bool Initialize(
             string productGuid,
@@ -109,6 +109,7 @@ namespace ForceFeedbackSharpDx
             catch (SharpDX.SharpDXException ex) when ((uint)ex.HResult == WINDOW_HANDLE_ERROR)
             {
                 Logger?.LogDebug(" Unable to access window handle.  Do not run EDForceFeedback.exe in a console window.");
+                StatusText = "Unable to access window handle";
                 return false;
             }
 
@@ -131,6 +132,8 @@ namespace ForceFeedbackSharpDx
             joystick.Properties.DeadZone = deadzone;
             joystick.Properties.Saturation = saturation;
             joystick.Properties.ForceFeedbackGain = forceFeedbackGain;
+
+            StatusText = $"{joystickName}: Aquired";
 
             return true;
         }

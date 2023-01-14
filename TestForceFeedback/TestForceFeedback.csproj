@@ -243,10 +243,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\EliteAPI\EliteAPI\EliteAPI.csproj">
-      <Project>{9bc679d4-2731-43bd-bc78-a502f76b8632}</Project>
-      <Name>EliteAPI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ForceFeedbackSharpDx\ForceFeedbackSharpDx.csproj">
       <Project>{D3C53E08-943F-4DD8-9939-6CD5858E28AC}</Project>
       <Name>ForceFeedbackSharpDx</Name>

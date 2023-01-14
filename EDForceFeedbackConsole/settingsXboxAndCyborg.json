@@ -12,8 +12,95 @@
 
   "Devices": [
     {
-      "ProductGuid": "001b045e-0000-0000-0000-504944564944",
-      "ProductName": "SideWinder Force Feedback 2 Joystick",
+      "ProductGuid": "02dd045e-0000-0000-0000-504944564944",
+      "ProductName": "Controller (Xbox One For Windows)",
+
+      "StatusEvents": [
+        {
+          "Event": "Status.Docked:True",
+          "ForceFile": "Dock.ffe",
+          "Duration": 2000
+        },
+        {
+          "Event": "Status.Docked:False",
+          "ForceFile": "Dock.ffe",
+          "Duration": 2000
+        },
+        {
+          "Event": "Status.Gear:True",
+          "ForceFile": "Gear.ffe",
+          "Duration": 3000
+        },
+        {
+          "Event": "Status.Gear:False",
+          "ForceFile": "Gear.ffe",
+          "Duration": 3000
+        },
+        {
+          "Event": "Status.Lights:True",
+          "ForceFile": "Vibrate.ffe",
+          "Duration": 250
+        },
+        {
+          "Event": "Status.Lights:False",
+          "ForceFile": "Vibrate.ffe",
+          "Duration": 250
+        },
+        {
+          "Event": "Status.Hardpoints:True",
+          "ForceFile": "Hardpoints.ffe",
+          "Duration": 2000
+        },
+        {
+          "Event": "Status.Hardpoints:False",
+          "ForceFile": "Hardpoints.ffe",
+          "Duration": 2000
+        },
+        {
+          "Event": "Status.Landed:True",
+          "ForceFile": "Hardpoints.ffe",
+          "Duration": 1500
+        },
+        {
+          "Event": "Status.Landed:False",
+          "ForceFile": "Hardpoints.ffe",
+          "Duration": 1500
+        },
+        {
+          "Event": "Status.LowFuel:True",
+          "ForceFile": "VibrateSide.ffe",
+          "Duration": 500
+        },
+        {
+          "Event": "Status.LowFuel:False",
+          "ForceFile": "VibrateSide.ffe",
+          "Duration": 500
+        },
+        {
+          "Event": "Status.CargoScoop:True",
+          "ForceFile": "Cargo.ffe",
+          "Duration": 2000
+        },
+        {
+          "Event": "Status.CargoScoop:False",
+          "ForceFile": "Cargo.ffe",
+          "Duration": 2000
+        },
+        {
+          "Event": "Status.Overheating:True",
+          "ForceFile": "VibrateSide.ffe",
+          "Duration": 250
+        },
+        {
+          "Event": "Status.Overheating:False",
+          "ForceFile": "VibrateSide.ffe",
+          "Duration": 250
+        }
+      ]
+    },
+    {
+      "ProductGuid": "ff1206a3-0000-0000-0000-504944564944",
+      "ProductName": "",
       "AutoCenter": true,
       "ForceFeedbackGain": 10000,
 

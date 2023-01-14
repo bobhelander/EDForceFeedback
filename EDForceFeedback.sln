@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29123.88
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ForceFeedbackSharpDx", "ForceFeedbackSharpDx\ForceFeedbackSharpDx.csproj", "{D3C53E08-943F-4DD8-9939-6CD5858E28AC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Journals", "Journals\Journals.csproj", "{CF2E9959-F6FE-4E26-89E9-AF7DFAB9099E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDForceFeedback", "EDForceFeedback\EDForceFeedback.csproj", "{072E80F0-C235-44F2-B93B-747C488B490A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestForceFeedback", "TestForceFeedback\TestForceFeedback.csproj", "{574005ED-6B12-4092-AC48-71B5B302F8AD}"
 EndProject
@@ -16,7 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EliteAPI", "..\EliteAPI\EliteAPI\EliteAPI.csproj", "{9BC679D4-2731-43BD-BC78-A502F76B8632}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDForceFeedbackConsole", "EDForceFeedbackConsole\EDForceFeedbackConsole.csproj", "{072E80F0-C235-44F2-B93B-747C488B490A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDForceFeedback", "EDForceFeedback\EDForceFeedback.csproj", "{F24136C3-F07D-43C6-AC47-8CB55059EA4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,18 +32,18 @@ Global
 		{CF2E9959-F6FE-4E26-89E9-AF7DFAB9099E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF2E9959-F6FE-4E26-89E9-AF7DFAB9099E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF2E9959-F6FE-4E26-89E9-AF7DFAB9099E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{072E80F0-C235-44F2-B93B-747C488B490A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{072E80F0-C235-44F2-B93B-747C488B490A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{072E80F0-C235-44F2-B93B-747C488B490A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{072E80F0-C235-44F2-B93B-747C488B490A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{574005ED-6B12-4092-AC48-71B5B302F8AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{574005ED-6B12-4092-AC48-71B5B302F8AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{574005ED-6B12-4092-AC48-71B5B302F8AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{574005ED-6B12-4092-AC48-71B5B302F8AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9BC679D4-2731-43BD-BC78-A502F76B8632}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9BC679D4-2731-43BD-BC78-A502F76B8632}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9BC679D4-2731-43BD-BC78-A502F76B8632}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9BC679D4-2731-43BD-BC78-A502F76B8632}.Release|Any CPU.Build.0 = Release|Any CPU
+		{072E80F0-C235-44F2-B93B-747C488B490A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{072E80F0-C235-44F2-B93B-747C488B490A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{072E80F0-C235-44F2-B93B-747C488B490A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{072E80F0-C235-44F2-B93B-747C488B490A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F24136C3-F07D-43C6-AC47-8CB55059EA4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F24136C3-F07D-43C6-AC47-8CB55059EA4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F24136C3-F07D-43C6-AC47-8CB55059EA4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F24136C3-F07D-43C6-AC47-8CB55059EA4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

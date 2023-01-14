@@ -1,20 +1,19 @@
-using Journals;
+﻿using Journals;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace EDForceFeedback
 {
-    internal static class Program
+    static public class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static async Task Main(string[] args)
+        static private async Task Main(string[] args)
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            
             var fileName = $"{Directory.GetCurrentDirectory()}\\settings.json";
 
             // Check if a settings file was specified
@@ -41,14 +40,12 @@ namespace EDForceFeedback
 
             var settings = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(fileName));
 
-            //var client = new Client();
+            var client = new Client();
 
-            //await client.Initialize(settings).ConfigureAwait(false);
+            await client.Initialize(settings).ConfigureAwait(false);
 
-//          while (true)
-//              await Task.Delay(5000).ConfigureAwait(false);
-
-            Application.Run(new Form1(new Client(), settings));
+            while (true)
+                await Task.Delay(5000).ConfigureAwait(false);
         }
     }
 }
