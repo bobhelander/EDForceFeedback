@@ -12,6 +12,19 @@ It has been tested with the following devices:
 
 [Saitek Cyborg 3D Force Stick](https://www.yumpu.com/en/document/view/38049421/cyborg-force-manualqxd-saitekcom)
 
+[MOZA AB6 FFB Base](https://mozaracing.com/products/ab6-bundle) and [MOZA AB9 FFB Base](https://mozaracing.com/products/ab9-base) — see the MOZA setup notes below.
+
+##### MOZA AB6 / AB9 setup
+
+The MOZA flight bases expose a standard DirectInput FFB device, but the firmware
+silently swallows DirectInput effect writes unless **MOZA Cockpit** is running
+concurrently with **Integrated FFB** toggled ON in Cockpit's Basic Settings page.
+With that toggle, Cockpit's filter relays the effects to the motor.
+
+Use `settingsMozaAB6.json` (or `settingsMozaAB9.json`) as a starting point — they
+register the device by ProductGuid and map all 28 status flags to the bundled
+`.ffe` files. Run `EDForceFeedback.exe` as administrator.
+
 ### Usage
 1. Connect your joystick/gamepad and run the EDForceFeedback.exe program.  
 2. Start Elite Dangerous 
