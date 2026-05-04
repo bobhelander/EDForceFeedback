@@ -1,0 +1,99 @@
+{
+  "_NOTES_BEFORE_USE": [
+    "MOZA AB9 FFB Base requires MOZA Cockpit running concurrently with",
+    "'Integrated FFB' toggled ON in Basic Settings. Without that toggle the",
+    "AB6 firmware silently swallows DirectInput effect writes.",
+    "",
+    "Run EDForceFeedback.exe AS ADMINISTRATOR. UAC-elevated cooperative",
+    "level is required to acquire FFB exclusively.",
+    "",
+    "Rename this file to settings.json (or pass it on the command line) to",
+    "apply.  Rename the existing settings.json out of the way first."
+  ],
+
+  "KnownWorkingDevices": {
+    "NOTES": "ProductGuid + ProductName values for devices known to work with this program.",
+    "Xbox One For Windows": "ProductGuid = 02dd045e-0000-0000-0000-504944564944",
+    "MSFF2":                "ProductGuid = 001b045e-0000-0000-0000-504944564944  ProductName = 'SideWinder Force Feedback 2 Joystick'",
+    "Saitek Cyborg 3D":     "ProductGuid = ff1206a3-0000-0000-0000-504944564944",
+    "Saitek Cyborg Evo":    "ProductGuid = ffb506a3-0000-0000-0000-504944564944",
+    "Teensy Boards":        "ProductGuid = 230028de-0000-0000-0000-504944564944  ProductName = IMU",
+    "MOZA AB9 FFB Base":    "ProductGuid = 1000346e-0000-0000-0000-504944564944  ProductName = 'MOZA AB9 FFB Base'  (requires MOZA Cockpit + Integrated FFB)",
+    "MOZA AB9 FFB Base":    "ProductGuid = 1000346e-0000-0000-0000-504944564944  ProductName = 'MOZA AB9 FFB Base'  (requires MOZA Cockpit + Integrated FFB)"
+  },
+
+  "Devices": [
+    {
+      "ProductGuid": "1000346e-0000-0000-0000-504944564944",
+      "ProductName": "MOZA AB9 FFB Base",
+      "AutoCenter": true,
+      "ForceFeedbackGain": 10000,
+
+      "StatusEvents": [
+        { "Event": "Status.Docked:True",         "ForceFile": "Dock.ffe",         "Duration": 2000 },
+        { "Event": "Status.Docked:False",        "ForceFile": "Dock.ffe",         "Duration": 2000 },
+
+        { "Event": "Status.Landed:True",         "ForceFile": "Hardpoints.ffe",   "Duration": 1500 },
+        { "Event": "Status.Landed:False",        "ForceFile": "Hardpoints.ffe",   "Duration": 1500 },
+
+        { "Event": "Status.Gear:True",           "ForceFile": "Gear.ffe",         "Duration": 3000 },
+        { "Event": "Status.Gear:False",          "ForceFile": "Gear.ffe",         "Duration": 3000 },
+
+        { "Event": "Status.Hardpoints:True",     "ForceFile": "Hardpoints.ffe",   "Duration": 2000 },
+        { "Event": "Status.Hardpoints:False",    "ForceFile": "Hardpoints.ffe",   "Duration": 2000 },
+
+        { "Event": "Status.CargoScoop:True",     "ForceFile": "Cargo.ffe",        "Duration": 2000 },
+        { "Event": "Status.CargoScoop:False",    "ForceFile": "Cargo.ffe",        "Duration": 2000 },
+
+        { "Event": "Status.Lights:True",         "ForceFile": "Vibrate.ffe",      "Duration": 250 },
+        { "Event": "Status.Lights:False",        "ForceFile": "Vibrate.ffe",      "Duration": 250 },
+
+        { "Event": "Status.Shields:True",        "ForceFile": "Vibrate.ffe",      "Duration": 500 },
+        { "Event": "Status.Shields:False",       "ForceFile": "VibrateSide.ffe",  "Duration": 1000 },
+
+        { "Event": "Status.Supercruise:True",    "ForceFile": "VibrateSide.ffe",  "Duration": 1500 },
+        { "Event": "Status.Supercruise:False",   "ForceFile": "VibrateSide.ffe",  "Duration": 1500 },
+
+        { "Event": "Status.FsdCharging:True",    "ForceFile": "VibrateSide.ffe",  "Duration": 1500 },
+        { "Event": "Status.FsdCooldown:True",    "ForceFile": "VibrateSide.ffe",  "Duration": 2000 },
+        { "Event": "Status.FsdCooldown:False",   "ForceFile": "Vibrate.ffe",      "Duration": 250 },
+
+        { "Event": "Status.MassLocked:True",     "ForceFile": "VibrateSide.ffe",  "Duration": 1500 },
+        { "Event": "Status.MassLocked:False",    "ForceFile": "Vibrate.ffe",      "Duration": 250 },
+
+        { "Event": "Status.LowFuel:True",        "ForceFile": "VibrateSide.ffe",  "Duration": 500 },
+        { "Event": "Status.LowFuel:False",       "ForceFile": "Vibrate.ffe",      "Duration": 250 },
+
+        { "Event": "Status.Overheating:True",    "ForceFile": "VibrateSide.ffe",  "Duration": 500 },
+        { "Event": "Status.Overheating:False",   "ForceFile": "Vibrate.ffe",      "Duration": 250 },
+
+        { "Event": "Status.Scooping:True",       "ForceFile": "VibrateSide.ffe",  "Duration": 1500 },
+
+        { "Event": "Status.SilentRunning:True",  "ForceFile": "VibrateSide.ffe",  "Duration": 500 },
+        { "Event": "Status.SilentRunning:False", "ForceFile": "VibrateSide.ffe",  "Duration": 500 },
+
+        { "Event": "Status.NightVision:True",    "ForceFile": "Vibrate.ffe",      "Duration": 200 },
+        { "Event": "Status.NightVision:False",   "ForceFile": "Vibrate.ffe",      "Duration": 200 },
+
+        { "Event": "Status.AnalysisMode:True",   "ForceFile": "Vibrate.ffe",      "Duration": 200 },
+        { "Event": "Status.AnalysisMode:False",  "ForceFile": "Vibrate.ffe",      "Duration": 200 },
+
+        { "Event": "Status.FlightAssist:True",   "ForceFile": "Vibrate.ffe",      "Duration": 250 },
+        { "Event": "Status.FlightAssist:False",  "ForceFile": "Vibrate.ffe",      "Duration": 250 },
+
+        { "Event": "Status.InDanger:True",       "ForceFile": "VibrateSide.ffe",  "Duration": 1000 },
+
+        { "Event": "Status.InInterdiction:True", "ForceFile": "Hardpoints.ffe",   "Duration": 2500 },
+
+        { "Event": "Status.InNoFireZone:True",   "ForceFile": "Vibrate.ffe",      "Duration": 250 },
+
+        { "Event": "Status.InMothership:True",   "ForceFile": "Vibrate.ffe",      "Duration": 250 },
+        { "Event": "Status.InFighter:True",      "ForceFile": "Vibrate.ffe",      "Duration": 250 },
+        { "Event": "Status.InSRV:True",          "ForceFile": "Vibrate.ffe",      "Duration": 250 },
+
+        { "Event": "Status.SrvHandbreak:True",   "ForceFile": "Vibrate.ffe",      "Duration": 250 },
+        { "Event": "Status.SrvTurrent:True",     "ForceFile": "Vibrate.ffe",      "Duration": 250 }
+      ]
+    }
+  ]
+}
